@@ -228,7 +228,7 @@ func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (se
 	cookie := &http.Cookie{
 		Name:     manager.config.CookieName,
 		Value:    url.QueryEscape(sid),
-		Path:     "/",
+		Path:     "/v2",
 		HttpOnly: !manager.config.DisableHTTPOnly,
 		Secure:   manager.isSecure(r),
 		Domain:   manager.config.Domain,
@@ -267,7 +267,7 @@ func (manager *Manager) SessionDestroy(w http.ResponseWriter, r *http.Request) {
 	if manager.config.EnableSetCookie {
 		expiration := time.Now()
 		cookie = &http.Cookie{Name: manager.config.CookieName,
-			Path:     "/",
+			Path:     "/v2",
 			HttpOnly: !manager.config.DisableHTTPOnly,
 			Expires:  expiration,
 			MaxAge:   -1,
