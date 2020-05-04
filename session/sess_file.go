@@ -15,11 +15,11 @@
 package session
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
-	"errors"
 	"path"
 	"path/filepath"
 	"strings"
@@ -145,7 +145,7 @@ func (fp *FileProvider) SessionRead(sid string) (Store, error) {
 	_, err = os.Stat(path.Join(fp.savePath, string(sid[0]), string(sid[1]), sid))
 	var f *os.File
 	if err == nil {
-		f, err = os.OpenFile(path.Join(fp.savePath, string(sid[0]), string(sid[1]), sid), os.O_RDWR, 0777)
+		f, err = os.OpenFile(path.Join(fp.savePath, string(sid[0]), string(sid[1]), sid), os.O_RDWR, 0755)
 	} else if os.IsNotExist(err) {
 		f, err = os.Create(path.Join(fp.savePath, string(sid[0]), string(sid[1]), sid))
 	} else {
@@ -231,7 +231,7 @@ func (fp *FileProvider) SessionRegenerate(oldsid, sid string) (Store, error) {
 		return nil, fmt.Errorf("newsid %s exist", newSidFile)
 	}
 
-	err = os.MkdirAll(newPath, 0777)
+	err = os.MkdirAll(newPath, 0755)
 	if err != nil {
 		SLogger.Println(err.Error())
 	}
